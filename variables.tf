@@ -1,21 +1,26 @@
 variable "vpc-id" {
-  type = "string"
+  description = "VPC identifier to create the subnet in."
+  type        = "string"
 }
 
 variable "cidr" {
-  type = "string"
+  description = "Subnet's CIDR range."
+  type        = "string"
 }
 
 variable "az" {
-  type = "string"
+  description = "Subnet's availability zone."
+  type        = "string"
 }
 
 variable "tags" {
-  type    = "map"
-  default = {}
+  description = "Additional tags."
+  type        = "map"
+  default     = {}
 }
 
 variable "name" {
-  type    = "string"
-  default = "private-subnet"
+  description = "Subnet name. Will be used as the 'Name' tag value."
+  type        = "string"
+  default     = "private-subnet"
 }
