@@ -1,4 +1,4 @@
-variable "vpc-id" {
+variable "vpc_id" {
   description = "VPC identifier to create the subnet in."
   type        = "string"
 }

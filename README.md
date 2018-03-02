@@ -10,7 +10,7 @@ See here: [INPUTS\OUTPUTS](INOUT.md)
 
 ### Inputs\Outputs
 
-See here: [INPUTS\OUTPUTS](FILES.md)
+See here: [FILES](FILES.md)
 
 ### Features
 
