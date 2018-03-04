@@ -6,11 +6,11 @@ Terraform registry: https://registry.terraform.io/modules/btower-labz/btlabz-pri
 
 ### Project structure
 
-See here: [INPUTS\OUTPUTS](INOUT.md)
+See here: [FILES](FILES.md)
 
 ### Inputs\Outputs
 
-See here: [FILES](FILES.md)
+See here: [INPUTS\OUTPUTS](INOUT.md)
 
 ### Features
 
