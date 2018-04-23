@@ -24,3 +24,9 @@ variable "name" {
   type        = "string"
   default     = "private-subnet"
 }
+
+variable "rt_name" {
+  description = "Private route table name. Will be used as the 'Name' tag value. Default is subnet name."
+  type        = "string"
+  default     = ""
+}

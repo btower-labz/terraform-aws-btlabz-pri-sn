@@ -13,13 +13,17 @@ resource "aws_subnet" "main" {
   )}"
 }
 
+locals {
+  rt_name = "${var.rt_name==""?format("rt-%s",var.name):var.rt_name}"
+}
+
 resource "aws_route_table" "main" {
   vpc_id = "${var.vpc_id}"
 
   tags = "${merge(
     var.tags,
     map(
-      "Name", "${var.name}"
+      "Name", "${local.rt_name}"
     )
   )}"
 }
