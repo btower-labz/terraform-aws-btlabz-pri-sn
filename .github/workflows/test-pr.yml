@@ -34,10 +34,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
-          role-duration-seconds: 1200
-          role-session-name: terratest-${{ github.sha }}
+          # role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          # role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
+          # role-duration-seconds: 1200
+          # role-session-name: terratest-${{ github.sha }}
 
       - name: Code Checkout
         uses: actions/checkout@v2
@@ -51,11 +51,13 @@ jobs:
           sudo chmod +x /usr/local/bin/terratest_log_parser
 
       - name: Tests Run
+        env:
+          GOMAXPROCS: 1
         run: |
           set -o pipefail
           cd .terratest
           [[ -f go.mod ]] || go mod init "infra_test"
-          go test -v -timeout 30m -count=1 | tee test_out.log
+          go test -v -timeout 30m -count=1 -p=1 | tee test_out.log
           rc=$?
           terratest_log_parser -testlog test_out.log -outputdir test_out
           exit $rc
