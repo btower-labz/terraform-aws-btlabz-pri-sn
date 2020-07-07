@@ -1,4 +1,4 @@
-name: Lint PR
+name: Test PR
 
 on:
   push:
@@ -11,8 +11,8 @@ on:
       - master
 
 jobs:
-  lint:
-    name: Lint PR - Terratest
+  test:
+    name: Test PR - Infra
     runs-on: ubuntu-latest
     steps:
 
@@ -55,3 +55,9 @@ jobs:
           [[ -f go.mod ]] || go mod init "infra_test"
           go test -v -timeout 30m -count=1 | tee test_out.log
           terratest_log_parser -testlog test_out.log -outputdir test_out
+
+      - name: Tests Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: .terratest/test_out/
