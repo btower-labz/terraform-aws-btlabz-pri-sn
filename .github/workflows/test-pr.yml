@@ -52,10 +52,13 @@ jobs:
 
       - name: Tests Run
         run: |
+          set -o pipefail
           cd .terratest
           [[ -f go.mod ]] || go mod init "infra_test"
           go test -v -timeout 30m -count=1 | tee test_out.log
+          rc=$?
           terratest_log_parser -testlog test_out.log -outputdir test_out
+          exit $rc
 
       - name: Tests Upload
         uses: actions/upload-artifact@v2

@@ -33,6 +33,7 @@ echo "testing ..."
 docker run -ti --rm \
 -e HOME=${HOME} \
 -e AWS_PROFILE=terraform-infra-test \
+-e TERRATEST_IAM_ROLE=arn:aws:iam::358458405859:role/terratest \
 -e GOMAXPROCS=5 \
 -v "${HOME}:${HOME}/" \
 -v /etc/group:/etc/group:ro \
