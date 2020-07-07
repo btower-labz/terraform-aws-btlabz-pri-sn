@@ -46,8 +46,9 @@ jobs:
         env:
           LP_URL: https://github.com/gruntwork-io/terratest/releases/download/v0.13.13/terratest_log_parser_linux_amd64
         run: |
-          curl --location --silent --fail --show-error -o /usr/local/bin/terratest_log_parser ${LP_URL}
-          chmod +x /usr/local/bin/terratest_log_parser
+          id
+          sudo curl --location --silent --fail --show-error -o /usr/local/bin/terratest_log_parser ${LP_URL}
+          sudo chmod +x /usr/local/bin/terratest_log_parser
 
       - name: Tests Run
         run: |
