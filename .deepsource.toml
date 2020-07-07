@@ -9,10 +9,6 @@ enabled = true
   import_paths = ["infra_test"]
 
 [[analyzers]]
-name = "docker"
-enabled = true
-
-[[analyzers]]
 name = "terraform"
 enabled = true
 
