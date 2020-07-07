@@ -1,0 +1,62 @@
+name: Lint PR
+
+on:
+  push:
+    #tags:
+    #  - v*
+    branches:
+      - master
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  lint:
+    name: Lint PR - Terratest
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup GO
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.14.1
+        id: go
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run golangci
+        uses: golangci/golangci-lint-action@v1
+        with:
+          # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
+          version: v1.26
+          
+          # Optional: working directory, useful for monorepos
+          working-directory: .terratest
+
+          # Optional: golangci-lint command line arguments.
+          # args: --issues-exit-code=0
+
+          # Optional: show only new issues if it's a pull request. The default value is `false`.
+          # only-new-issues: true
+
+  tlint:
+    name: Lint PR - Teraform
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        #with:
+        #  cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Teraform Validate
+        env:
+          AWS_REGION: us-west-1
+        run: terraform validate -json -no-color
+
+      - name: Terraform Format
+        run: terraform fmt -check

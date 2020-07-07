@@ -8,5 +8,6 @@
 **/terratest-*.log
 **/test_out/
 **/test_out.log
+**/.terraform/
 
 *.save
