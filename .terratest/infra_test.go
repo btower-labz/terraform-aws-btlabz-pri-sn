@@ -14,7 +14,7 @@ func DoInfraDeploy(t *testing.T, region string) {
 
 	envVars := map[string]string{
 		"AWS_REGION":        region,
-		"TF_LOG":            "TRACE",
+		//"TF_LOG":            "TRACE",
 		"TF_LOG_PATH":       fmt.Sprintf("./terratest-%s.log", uniqueId),
 		"TF_INPUT":          "0",
 		"TF_VAR_region":     region,
