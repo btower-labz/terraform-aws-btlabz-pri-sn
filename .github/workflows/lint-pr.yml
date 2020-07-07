@@ -104,7 +104,7 @@ jobs:
 
       - name: Teraform Validate
         env:
-          AWS_REGION: us-west-1
+          AWS_REGION: us-east-1
         run: terraform validate -json -no-color
 
       - name: Terraform Format
