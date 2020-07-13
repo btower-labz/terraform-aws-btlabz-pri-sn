@@ -62,7 +62,7 @@ jobs:
           terratest_log_parser -testlog test_out.log -outputdir test_out
           ls -la
           ls -la ../infratest
-	  ls -la ../
+          ls -la ../
           exit $rc
 
       - name: Tests Upload
