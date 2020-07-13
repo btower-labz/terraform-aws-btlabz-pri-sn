@@ -30,4 +30,3 @@ variable "rt_name" {
   type        = string
   default     = ""
 }
-
