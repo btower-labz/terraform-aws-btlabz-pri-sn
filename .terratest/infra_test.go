@@ -50,8 +50,6 @@ func DoInfraDeploy(t *testing.T, region string) {
 	logger.Logf(t, "vpc_id: %v", terraform.OutputRequired(t, vpc_001, "vpc_id"))
 	logger.Logf(t, "az: %v", terraform.OutputRequired(t, vpc_001, "az"))
 
-        /*
-
 	subnet001 := &terraform.Options{
 		TerraformDir: "../",
 		Vars: map[string]interface{}{
@@ -71,8 +69,6 @@ func DoInfraDeploy(t *testing.T, region string) {
 
 	logger.Logf(t, "subnet_id: %v", terraform.OutputRequired(t, subnet001, "subnet_id"))
 	logger.Logf(t, "rt_id: %v", terraform.OutputRequired(t, subnet001, "rt_id"))
-
-        */
 
 }
 
