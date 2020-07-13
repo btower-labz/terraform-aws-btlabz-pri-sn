@@ -47,15 +47,18 @@ func DoInfraDeploy(t *testing.T, region string) {
 	terraform.Plan(t, vpc_001)
 	terraform.ApplyAndIdempotent(t, vpc_001)
 
-	logger.Logf(t, "vpc_id: %v", terraform.OutputRequired(t, vpc_001, "vpc_id"))
-	logger.Logf(t, "az: %v", terraform.OutputRequired(t, vpc_001, "az"))
+	vpc_id := terraform.OutputRequired(t, vpc_001, "vpc_id")
+	az := terraform.OutputRequired(t, vpc_001, "az")
+
+	logger.Logf(t, "vpc_id: %s", vpc_id)
+	logger.Logf(t, "az: %s", vpc_id)
 
 	subnet001 := &terraform.Options{
 		TerraformDir: "../",
 		Vars: map[string]interface{}{
 			"cidr":   "10.0.2.0/24",
-			"vpc_id": terraform.OutputRequired(t, vpc_001, "vpc_id"),
-			"az":     terraform.OutputRequired(t, vpc_001, "az"),
+			"vpc_id": vpc_id,
+			"az":     az,
 			"name":   fmt.Sprintf("terratest-%s", uniqueId),
 		},
 		EnvVars: envVars,
