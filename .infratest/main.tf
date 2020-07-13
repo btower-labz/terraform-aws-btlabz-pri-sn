@@ -5,11 +5,9 @@ resource "aws_vpc" "main" {
   }
 }
 
-/*
 module "main" {
   source = "../"
   cidr   = "10.0.1.0/24"
   az     = data.aws_availability_zone.az.name
   vpc_id = aws_vpc.main.id
 }
-*/

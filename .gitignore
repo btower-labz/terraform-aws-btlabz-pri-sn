@@ -11,3 +11,6 @@
 **/.terraform/
 
 *.save
+
+**/*.tfplan
+**/plan.json
