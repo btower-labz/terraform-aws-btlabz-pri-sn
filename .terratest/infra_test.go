@@ -13,7 +13,6 @@ import (
 func DoInfraDeploy(t *testing.T, region string) {
 	uniqueId := random.UniqueId()
 	logger.Logf(t, "uniqueId: %v", uniqueId)
-
 	dataPath, err := filepath.Abs("./.terraform")
 	if err != nil {
 		t.Fatalf("Error converting file path: %v", err)
@@ -47,18 +46,15 @@ func DoInfraDeploy(t *testing.T, region string) {
 	terraform.Plan(t, vpc_001)
 	terraform.ApplyAndIdempotent(t, vpc_001)
 
-	vpc_id := terraform.OutputRequired(t, vpc_001, "vpc_id")
-	az := terraform.OutputRequired(t, vpc_001, "az")
-
-	logger.Logf(t, "vpc_id: %s", vpc_id)
-	logger.Logf(t, "az: %s", vpc_id)
+	logger.Logf(t, "vpc_id: %s", terraform.OutputRequired(t, vpc_001, "vpc_id"))
+	logger.Logf(t, "az: %s", terraform.OutputRequired(t, vpc_001, "az"))
 
 	subnet001 := &terraform.Options{
 		TerraformDir: "../",
 		Vars: map[string]interface{}{
 			"cidr":   "10.0.2.0/24",
-			"vpc_id": vpc_id,
-			"az":     az,
+			"vpc_id": terraform.OutputRequired(t, vpc_001, "vpc_id"),
+			"az":     terraform.OutputRequired(t, vpc_001, "az"),
 			"name":   fmt.Sprintf("terratest-%s", uniqueId),
 		},
 		EnvVars: envVars,
@@ -83,4 +79,9 @@ func TestRegion_US_WEST_1(t *testing.T) {
 func TestRegion_EU_WEST_1(t *testing.T) {
 	t.Parallel()
 	DoInfraDeploy(t, "eu-west-1")
+}
+
+func TestRegion_EU_WEST_1(t *testing.T) {
+        t.Parallel()
+        DoInfraDeploy(t, "me-south-1")
 }
