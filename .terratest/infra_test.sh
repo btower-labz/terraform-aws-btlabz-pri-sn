@@ -7,15 +7,15 @@ set -o pipefail
 
 echo "initializing ..."
 
-[[ -f go.mod ]] || \
-docker run -ti --rm \
--e HOME=${HOME} \
--v "${HOME}:${HOME}/" \
--v /etc/group:/etc/group:ro \
--v /etc/passwd:/etc/passwd:ro \
--u $(id -u ${USER}):$(id -g ${USER}) \
--w $(pwd) \
-golang:1.14.4-stretch go mod init "infra_test"
+#[[ -f go.mod ]] || \
+#docker run -ti --rm \
+#-e HOME=${HOME} \
+#-v "${HOME}:${HOME}/" \
+#-v /etc/group:/etc/group:ro \
+#-v /etc/passwd:/etc/passwd:ro \
+#-u $(id -u ${USER}):$(id -g ${USER}) \
+#-w $(pwd) \
+#golang:1.14.4-stretch go mod init "infra_test"
 
 echo "formatting ..."
 
