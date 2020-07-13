@@ -81,7 +81,7 @@ func TestRegion_EU_WEST_1(t *testing.T) {
 	DoInfraDeploy(t, "eu-west-1")
 }
 
-func TestRegion_EU_WEST_1(t *testing.T) {
+func TestRegion_ME_SOUTH_1(t *testing.T) {
         t.Parallel()
         DoInfraDeploy(t, "me-south-1")
 }
