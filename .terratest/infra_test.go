@@ -5,6 +5,8 @@ import (
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -12,13 +14,20 @@ func DoInfraDeploy(t *testing.T, region string) {
 	uniqueId := random.UniqueId()
 	logger.Logf(t, "uniqueId: %v", uniqueId)
 
+	dataPath, err := filepath.Abs("./.terraform")
+	if err != nil {
+		t.Fatalf("Error converting file path: %v", err)
+	}
+
+	os.MkdirAll(dataPath, 0755)
+
 	envVars := map[string]string{
 		"AWS_REGION":        region,
-		//"TF_LOG":            "TRACE",
-		"TF_LOG_PATH":       fmt.Sprintf("./terratest-%s.log", uniqueId),
+		"TF_LOG":            "TRACE",
+		"TF_LOG_PATH":       fmt.Sprintf("%s/terratest-%s.log", dataPath, uniqueId),
 		"TF_INPUT":          "0",
 		"TF_VAR_region":     region,
-		"TF_DATA_DIR":       fmt.Sprintf(".terraform-%s.log", uniqueId),
+		"TF_DATA_DIR":       fmt.Sprintf("%s/terratest-%s", dataPath, uniqueId),
 		"TF_IN_AUTOMATION":  "YES",
 		"TF_CLI_ARGS_plan":  "-parallelism=25",
 		"TF_CLI_ARGS_apply": "-parallelism=25",

@@ -17,7 +17,7 @@ docker run -ti --rm \
 -w $(pwd) \
 golang:1.14.4-stretch go mod init "infra_test"
 
-echo "testing ..."
+echo "formatting ..."
 
 docker run -ti --rm \
 -e HOME=${HOME} \
@@ -30,6 +30,8 @@ golang:1.14.4-stretch go fmt
 
 echo "testing ..."
 
+mkdir -p $(pwd)/.terraform/test-report
+
 docker run -ti --rm \
 -e HOME=${HOME} \
 -e AWS_PROFILE=terraform-infra-test \
@@ -41,6 +43,6 @@ docker run -ti --rm \
 -v $(which terraform):/usr/local/bin/terraform:ro \
 -u $(id -u ${USER}):$(id -g ${USER}) \
 -w $(pwd) \
-golang:1.14.4-stretch go test -v -timeout 30m -count=1 | tee test_out.log
+golang:1.14.4-stretch go test -v -timeout 30m -count=1 | tee $(pwd)/.terraform/test-report.log
 
-terratest_log_parser -testlog test_out.log -outputdir test_out
+terratest_log_parser -testlog $(pwd)/.terraform/test-report.log -outputdir $(pwd)/.terraform/test-report
