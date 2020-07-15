@@ -1,5 +1,8 @@
 timeout: 300s
 queueTtl: 300s
+env:
+  - AWS_REGION=us-east-1
+
 steps:
 
   - name: hashicorp/terraform:0.12.28
@@ -18,8 +21,6 @@ steps:
 
   - name: hashicorp/terraform:0.12.28
     id: validate
-    env:
-      - AWS_REGION=us-east-1
     args:
       - validate
       - -json
@@ -35,4 +36,22 @@ steps:
       - -check
     waitFor:
       - init
+    timeout: 60s
+
+  - name: hashicorp/terraform:latest
+    args:
+      - validate
+      - -json
+      - -no-color
+    waitFor:
+      - validate
+    timeout: 60s
+
+  - name: hashicorp/terraform:0.12.0
+    args:
+      - validate
+      - -json
+      - -no-color
+    waitFor:
+      - validate
     timeout: 60s
