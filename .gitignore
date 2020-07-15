@@ -15,3 +15,5 @@
 **/*.tfplan
 .conftest/module.json
 .conftest/tfplan.json
+
+**/README.pdf
