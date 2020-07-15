@@ -1,7 +1,9 @@
 timeout: 300s
 queueTtl: 300s
-env:
-  - AWS_REGION=us-east-1
+
+options:
+  env:
+    - AWS_REGION=us-east-1
 
 steps:
 
