@@ -4,6 +4,14 @@ queueTtl: 300s
 options:
   env:
     - AWS_REGION=us-east-1
+    - AWS_CONFIG_FILE=/.aws/config
+    - AWS_PROFILE=codebuild
+    - AWS_SHARED_CREDENTIALS_FILE=/.aws/credentials
+    - GCP_SECRETS=terraform-public-modules
+
+  volumes:
+    - name: 'aws'
+      path: '/.aws'
 
 steps:
 
@@ -73,3 +81,21 @@ steps:
       - policy-parse
     entrypoint: '/bin/sh'
     args: [ '-c', "conftest test --no-color --combine --output=tap --policy .conftest/module.rego *.tf" ]
+
+  - id: aws-get-secrets
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args: [ '-c', "gcloud secrets versions access latest --secret=${GCP_SECRETS} --format='get(payload.data)' | tr '_-' '/+' | base64 -d > /aws/data.json" ]
+    waitFor: [ '-' ]
+
+  - id: aws-export-key
+    name: stedolan/jq
+    entrypoint: 'bash'
+    args: [ '-c', "jq --version"]
+    waitFor: [ 'aws-get-secrets' ]
+
+  - id: aws-configure-profile
+    name: amazon/aws-cli:latest
+    entrypoint: 'bash'
+    args: [ '-c', "aws --version"]
+    waitFor: [ 'aws-get-secrets' ]
