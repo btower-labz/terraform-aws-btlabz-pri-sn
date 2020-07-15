@@ -30,7 +30,7 @@ jobs:
       - name: Run golangci
         uses: golangci/golangci-lint-action@v1
         with:
-          version: v1.26
+          version: v1.28.3
           working-directory: .terratest
 
   # Check terraform syntax and formatting
