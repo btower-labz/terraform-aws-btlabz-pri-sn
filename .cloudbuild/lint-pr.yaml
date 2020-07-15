@@ -7,7 +7,7 @@ options:
 
 steps:
 
-  - id: teraform-version
+  - id: terraform-version
     name: hashicorp/terraform:0.12.28
     args:
       - version
