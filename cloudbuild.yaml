@@ -1,0 +1,13 @@
+steps:
+- name: ubuntu
+  args:
+  - '-set eEo pipefail'
+  - '-c'
+  - |-
+    var=$(curl abc.com)
+    if [var =="foo"]; do
+      echo "it's a foo!"
+    else
+      echo "not foo"
+    fi
+
