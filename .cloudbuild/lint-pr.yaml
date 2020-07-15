@@ -7,7 +7,6 @@ options:
     - AWS_CONFIG_FILE=/.aws/config
     - AWS_PROFILE=codebuild
     - AWS_SHARED_CREDENTIALS_FILE=/.aws/credentials
-    - GCP_SECRETS=terraform-public-modules
 
   volumes:
     - name: 'aws'
@@ -85,7 +84,7 @@ steps:
   - id: aws-get-secrets
     name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
-    args: [ '-c', "gcloud secrets versions access latest --secret=${GCP_SECRETS} --format='get(payload.data)' | tr '_-' '/+' | base64 -d > /aws/data.json" ]
+    args: [ '-c', "gcloud secrets versions access latest --secret=terraform-public-modules --format='get(payload.data)' | tr '_-' '/+' | base64 -d > /aws/data.json" ]
     waitFor: [ '-' ]
 
   - id: aws-export-key
