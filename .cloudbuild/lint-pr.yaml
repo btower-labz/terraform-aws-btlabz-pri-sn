@@ -72,4 +72,4 @@ steps:
     waitFor:
       - policy-parse
     entrypoint: '/bin/sh'
-    args: [ '-c', "conftest test --no-color --combine --policy .conftest/module.rego *.tf" ]
+    args: [ '-c', "conftest test --no-color --combine --output=tap --policy .conftest/module.rego *.tf" ]
