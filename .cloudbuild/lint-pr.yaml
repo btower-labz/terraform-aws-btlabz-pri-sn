@@ -4,13 +4,13 @@ queueTtl: 300s
 options:
   env:
     - AWS_REGION=us-east-1
-    - AWS_CONFIG_FILE=/.aws/config
+    - AWS_CONFIG_FILE=/aws/config
     - AWS_PROFILE=codebuild
-    - AWS_SHARED_CREDENTIALS_FILE=/.aws/credentials
+    - AWS_SHARED_CREDENTIALS_FILE=/aws/credentials
 
   volumes:
     - name: 'aws'
-      path: '/.aws'
+      path: '/aws'
 
 steps:
 
