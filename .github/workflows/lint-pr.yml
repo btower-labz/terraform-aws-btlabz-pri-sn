@@ -11,7 +11,9 @@ on:
       - master
 
 jobs:
-  lint:
+
+  # Check terratest go code
+  lint-terratest:
     name: Lint PR - Terratest
     runs-on: ubuntu-latest
     steps:
@@ -28,73 +30,26 @@ jobs:
       - name: Run golangci
         uses: golangci/golangci-lint-action@v1
         with:
-          # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
           version: v1.26
-          
-          # Optional: working directory, useful for monorepos
           working-directory: .terratest
 
-          # Optional: golangci-lint command line arguments.
-          # args: --issues-exit-code=0
-
-          # Optional: show only new issues if it's a pull request. The default value is `false`.
-          # only-new-issues: true
-
-  tlint-12-latest:
-    name: Lint PR - Teraform (Latest)
+  # Check terraform syntax and formatting
+  lint-terraform:
+    name: Lint PR - Terraform
     runs-on: ubuntu-latest
-    steps:
 
-      - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v1
-
-      - name: Terraform Version
-        run: terraform version
-
-      - name: Terraform Init
-        run: terraform init -backend=false
-
-      - name: Teraform Validate
-        env:
-          AWS_REGION: us-west-1
-        run: terraform validate -json -no-color
-
-      - name: Terraform Format
-        run: terraform fmt -check
-
-  tlint-12-ongoing:
-    name: Lint PR - Teraform (0.12.28)
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform:
+          - 0.12.28
+          - latest
+          - 0.12.0
     steps:
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.12.28
-
-      - name: Terraform Version
-        run: terraform version
-
-      - name: Terraform Init
-        run: terraform init -backend=false
-
-      - name: Teraform Validate
-        env:
-          AWS_REGION: us-west-1
-        run: terraform validate -json -no-color
-
-      - name: Terraform Format
-        run: terraform fmt -check
-
-  tlint-12-zero:
-    name: Lint PR - Teraform (0.12.0)
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.12.0
+          terraform_version: ${{ matrix.terraform }}
 
       - name: Terraform Version
         run: terraform version

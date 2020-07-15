@@ -13,4 +13,5 @@
 *.save
 
 **/*.tfplan
-**/plan.json
+.conftest/module.json
+.conftest/tfplan.json
