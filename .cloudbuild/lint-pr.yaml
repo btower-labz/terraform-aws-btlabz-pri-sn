@@ -1,3 +1,36 @@
+timeout: 300s
+queueTtl: 300s
 steps:
-- name: 'bash'
-  args: ['echo', 'I am running a bash command']
+
+  - name: hashicorp/terraform:0.12.28
+    id: version
+    args:
+      - version
+    timeout: 60s
+
+  - name: hashicorp/terraform:0.12.28
+    id: init
+    args:
+      - init
+      - -backend=false
+    waitFor: ['-']
+    timeout: 60s
+
+  - name: hashicorp/terraform:0.12.28
+    id: validate
+    args:
+      - validate
+      - -json
+      - -no-color
+    waitFor:
+      - init
+    timeout: 60s
+
+  - name: hashicorp/terraform:0.12.28
+    id: format
+    args:
+      - fmt
+      - -check
+    waitFor:
+      - init
+    timeout: 60s
