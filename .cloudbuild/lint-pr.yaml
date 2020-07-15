@@ -64,12 +64,12 @@ steps:
     name: instrumenta/conftest
     waitFor:
       - terraform-validate
-    entrypoint: 'bash'
+    entrypoint: '/bin/sh'
     args: [ '-c', "conftest parse *.tf --combine --no-color >| .conftest/module.json" ]
 
   - id: policy-test
     name: instrumenta/conftest
     waitFor:
       - policy-parse
-    entrypoint: 'bash'
+    entrypoint: '/bin/sh'
     args: [ '-c', "conftest test --no-color --combine --policy .conftest/module.rego *.tf" ]
