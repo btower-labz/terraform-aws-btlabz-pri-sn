@@ -17,3 +17,5 @@
 .conftest/tfplan.json
 
 **/README.pdf
+
+**/deprecated

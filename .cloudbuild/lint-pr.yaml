@@ -5,53 +5,69 @@ env:
 
 steps:
 
-  - name: hashicorp/terraform:0.12.28
-    id: version
+  - id: teraform-version
+    name: hashicorp/terraform:0.12.28
     args:
       - version
     timeout: 60s
 
-  - name: hashicorp/terraform:0.12.28
-    id: init
+  - id: terraform-init
+    name: hashicorp/terraform:0.12.28
     args:
       - init
       - -backend=false
     waitFor: ['-']
     timeout: 60s
 
-  - name: hashicorp/terraform:0.12.28
-    id: validate
+  - id: terraform-validate
+    name: hashicorp/terraform:0.12.28
     args:
       - validate
       - -json
       - -no-color
     waitFor:
-      - init
+      - terraform-init
     timeout: 60s
 
-  - name: hashicorp/terraform:0.12.28
-    id: format
+  - id: terraform-format
+    name: hashicorp/terraform:0.12.28
     args:
       - fmt
       - -check
     waitFor:
-      - init
+      - terraform-init
     timeout: 60s
 
-  - name: hashicorp/terraform:latest
+  - id: terraform-validate-latest
+    name: hashicorp/terraform:latest
     args:
       - validate
       - -json
       - -no-color
     waitFor:
-      - validate
+      - terraform-validate
     timeout: 60s
 
-  - name: hashicorp/terraform:0.12.0
+  - id: terraform-validate-zero
+    name: hashicorp/terraform:0.12.0
     args:
       - validate
       - -json
       - -no-color
     waitFor:
-      - validate
+      - terraform-validate
     timeout: 60s
+
+  - id: policy-parse
+    name: instrumenta/conftest
+    waitFor:
+      - terraform-validate
+    entrypoint: 'bash'
+    args: [ '-c', "conftest parse *.tf --combine --no-color >| .conftest/module.json" ]
+
+  - id: policy-test
+    name: instrumenta/conftest
+    waitFor:
+      - policy-parse
+    entrypoint: 'bash'
+    args: [ '-c', "conftest test --no-color --combine --policy .conftest/module.rego *.tf" ]
