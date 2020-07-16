@@ -81,3 +81,4 @@ docker run -ti --rm \
 -u $(id -u ${USER}):$(id -g ${USER}) \
 -w $(pwd) \
 instrumenta/conftest test --input json --policy plan.rego tfplan.json
+
