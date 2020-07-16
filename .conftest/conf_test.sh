@@ -13,6 +13,16 @@ docker run -ti --rm \
 -v /etc/passwd:/etc/passwd:ro \
 -u $(id -u ${USER}):$(id -g ${USER}) \
 -w $(pwd) \
+instrumenta/conftest --version
+
+docker run -ti --rm \
+-e HOME=${HOME} \
+-e AWS_PROFILE=terraform-infra-test \
+-v "${HOME}:${HOME}/" \
+-v /etc/group:/etc/group:ro \
+-v /etc/passwd:/etc/passwd:ro \
+-u $(id -u ${USER}):$(id -g ${USER}) \
+-w $(pwd) \
 instrumenta/conftest parse ../*.tf --combine --no-color >| module.json
 
 docker run -ti --rm \
