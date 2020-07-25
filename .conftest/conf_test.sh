@@ -13,7 +13,9 @@ docker run -ti --rm \
 -v /etc/passwd:/etc/passwd:ro \
 -u $(id -u ${USER}):$(id -g ${USER}) \
 -w $(pwd) \
-instrumenta/conftest --version
+instrumenta/conftest pull --help
+
+exit 0
 
 docker run -ti --rm \
 -e HOME=${HOME} \

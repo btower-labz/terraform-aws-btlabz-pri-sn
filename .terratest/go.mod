@@ -2,4 +2,7 @@ module infra_test
 
 go 1.14
 
-require github.com/gruntwork-io/terratest v0.28.7
+require (
+	github.com/gruntwork-io/terratest v0.28.10
+	github.com/stretchr/testify v1.4.0
+)
