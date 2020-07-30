@@ -11,4 +11,3 @@ enabled = true
 [[analyzers]]
 name = "terraform"
 enabled = true
-

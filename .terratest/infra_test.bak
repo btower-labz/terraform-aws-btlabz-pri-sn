@@ -1,0 +1,84 @@
+package infra_test
+
+import (
+	"fmt"
+	"github.com/gruntwork-io/terratest/modules/logger"
+	"github.com/gruntwork-io/terratest/modules/random"
+	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/require"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"testing"
+)
+
+func EnvWithNewVar(env map[string]string, name string, value string) map[string]string {
+	newEnv := make(map[string]string)
+	for n, v := range env {
+		newEnv[n] = v
+	}
+	newEnv[name] = value
+	return newEnv
+}
+
+func DoInfraDeploy(t *testing.T, region string, infraDir string, tfVars map[string]interface{}) {
+
+	// Generate unique run identifier
+	uniqueId := random.UniqueId()
+	logger.Logf(t, "uniqueId: %v", uniqueId)
+
+	// Generate temporary data dir
+	dataDir, err := ioutil.TempDir("", fmt.Sprintf("terratest-%s-*", uniqueId))
+	require.NoError(t, err, "Error creating data directory: %v", err)
+	defer os.RemoveAll(dataDir)
+	logger.Logf(t, "Data directory: %v", dataDir)
+
+	// Generate absolute terraform data path
+	dataPath, err := filepath.Abs(dataDir)
+	require.NoError(t, err, "Error converting data path: %v", err)
+	logger.Logf(t, "Data path: %v", dataPath)
+
+	infraPath, err := filepath.Abs(infraDir)
+	require.NoError(t, err, "Error converting infra path: %v", err)
+	logger.Logf(t, "Infra path: %v", infraPath)
+
+	// Setup common environment for all the states
+	infraEnvVars := map[string]string{
+		"AWS_REGION":        region,
+		"TF_LOG":            "TRACE",
+		"TF_INPUT":          "0",
+		"TF_VAR_region":     region,
+		"TF_VAR_terratest_run_id":     uniqueId,
+		"TF_IN_AUTOMATION":  "YES",
+		"TF_CLI_ARGS_plan":  "-compact-warnings",
+		"TF_CLI_ARGS_apply": "-compact-warnings",
+		"TF_DATA_DIR": fmt.Sprintf("%s/terratest-infra", dataPath),
+		"TF_LOG_PATH": fmt.Sprintf("%s/terratest-infra.log", dataPath),
+	}
+
+	workspaceName := fmt.Sprintf("terratest-infra-%s", uniqueId)
+
+	// See: https://github.com/gruntwork-io/terratest/blob/master/modules/terraform/options.go
+	infraOptions := &terraform.Options{
+		NoColor:      true,
+		Parallelism:  25,
+		TerraformDir: infraPath,
+		Vars: tfVars,
+		EnvVars: infraEnvVars,
+	}
+	terraform.WorkspaceSelectOrNew(t, infraOptions, workspaceName)
+	defer terraform.Destroy(t, infraOptions)
+
+	terraform.Init(t, infraOptions)
+	terraform.Plan(t, infraOptions)
+	terraform.ApplyAndIdempotent(t, infraOptions)
+}
+
+func TestRegionFromEnv(t *testing.T) {
+	t.Parallel()
+	region, ok := os.LookupEnv("TERRATEST_REGION")
+	require.True(t, ok, "Variable is required: %v", "TERRATEST_REGION")
+	require.NotEmpty(t, region, "Variable should not be empty: %v", "TERRATEST_REGION")
+	logger.Logf(t, "Testing region: %v", region)
+	DoInfraDeploy(t, region, "../.infratest")
+}
