@@ -6,8 +6,6 @@
 ├── LICENSE
 ├── main.tf
 ├── outputs.tf
-├── terraform.tfstate
-├── terraform.tfstate.backup
 ├── variables.tf
 └── versions.tf
 ```
@@ -19,8 +17,6 @@
 | ./LICENSE | | 
 | ./main.tf | | 
 | ./outputs.tf | | 
-| ./terraform.tfstate | | 
-| ./terraform.tfstate.backup | | 
 | ./variables.tf | | 
 | ./versions.tf | | 
 | ... | ... |
