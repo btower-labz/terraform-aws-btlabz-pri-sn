@@ -3,6 +3,23 @@
 *.tfstate.backup
 
 # Module directory
-.terraform/
+**/.terraform-*/
+**/terraform.tfstate.d/
+**/terratest-*.log
+**/test_out/
+**/test_out.log
+**/.terraform/
+
 *.save
+
+**/*.tfplan
+.conftest/module.json
+.conftest/tfplan.json
+
+**/README.pdf
+
+**/deprecated
+**/.deprecated
+
+**/report.log
 

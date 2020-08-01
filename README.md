@@ -1,8 +1,8 @@
-# BT-Labz AWS VPC parts.
+# BT-Labz AWS VPC parts
 
-## Private subnet module.
+## Private subnet module
 
-Terraform registry: https://registry.terraform.io/modules/btower-labz/btlabz-pri-sn/aws
+Terraform registry: [https://registry.terraform.io/modules/btower-labz/btlabz-pri-sn/aws](https://registry.terraform.io/modules/btower-labz/btlabz-pri-sn/aws)
 
 ### Project structure
 
@@ -19,7 +19,7 @@ See here: [INPUTS\OUTPUTS](INOUT.md)
 
 ### Usage
 
-```
+```terraform
 
 
 ```

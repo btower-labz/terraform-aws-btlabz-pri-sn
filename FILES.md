@@ -7,7 +7,7 @@
 ├── main.tf
 ├── outputs.tf
 ├── variables.tf
-└── version.tf
+└── versions.tf
 ```
 
 ## Files table
@@ -18,5 +18,5 @@
 | ./main.tf | | 
 | ./outputs.tf | | 
 | ./variables.tf | | 
-| ./version.tf | | 
+| ./versions.tf | | 
 | ... | ... |
