@@ -5,6 +5,12 @@ resource "aws_subnet" "main" {
   map_public_ip_on_launch         = false
   assign_ipv6_address_on_creation = false
 
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+
   #tags = merge(
   #  var.tags,
   #  {
