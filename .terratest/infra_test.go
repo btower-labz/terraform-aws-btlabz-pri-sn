@@ -83,7 +83,8 @@ func TestRegionFromEnv(t *testing.T) {
 	// Deploy infrastructure
 	test_structure.RunTestStage(t, "apply", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, infraTestDir)
-		terraform.ApplyAndIdempotent(t, terraformOptions)
+		// terraform.ApplyAndIdempotent(t, terraformOptions)
+                terraform.Apply(t, terraformOptions)
 	})
 
 }
